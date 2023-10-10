@@ -1,4 +1,3 @@
-Attribute VB_Name = "Module1"
 Sub challenge2()
 
 Dim current_ticker As String
@@ -17,6 +16,7 @@ Dim greatest_decrease As Variant
 Dim greatest_volume_ticker As String
 Dim greatest_volume As LongLong
 Dim sample_count As Long
+Dim evaluation_started As Boolean
 Dim ws As Worksheet
 
 For Each ws In Worksheets 'for each statement that runs this or each worksheet in the workbook
@@ -31,7 +31,8 @@ year_change = 0
 year_open = 0
 year_close = 0
 year_volume_total = 0
-sample_count = 0
+'sample_count = 0
+evluation_started = 0
 
 
 column_ticker = 1
@@ -54,10 +55,15 @@ Cells(4, 15).Value = "Largest Volume"
 
 
 Do 'loop is active until an empty cell is detected
-    If Cells(i + 1, column_ticker).Value <> Cells(i, column_ticker).Value Then 'current and next cell are different, nearly all data gathering is considered complete, now it is evaluated
+    If valuation_started = False Then 'new ticker detected
+        year_open = Cells(i, column_open).Value
+        year_volume_total = year_volume_total + Cells(i, column_volume).Value
+        evaluation_started = True
+        i = i + 1
+        
+    ElseIf Cells(i + 1, column_ticker).Value <> Cells(i, column_ticker).Value Then 'current and next cell are different, nearly all data gathering is considered complete, now it is evaluated
         j = j + 1
         year_volume_total = year_volume_total + Cells(i, column_volume).Value 'add last volume value to yearly total
-        
         year_close = Cells(i, column_close).Value
         year_change = year_close - year_open
         year_change_percent = (year_close / year_open) - 1
@@ -116,20 +122,13 @@ Do 'loop is active until an empty cell is detected
         
         'reinitialize variables for next loop
         year_volume_total = 0
-        i = i + 1   '
-        sample_count = 0
-    ElseIf sample_count = 0 Then 'new ticker detected
-        year_open = Cells(i, column_open).Value
-        year_volume_total = year_volume_total + Cells(i, column_volume).Value
-        sample_count = sample_count + 1
         i = i + 1
+        evaluation_started = False
     Else 'no new ticker detected
         year_volume_total = year_volume_total + Cells(i, column_volume).Value
-        sample_count = sample_count + 1
         i = i + 1
     End If
 Loop While Cells(i, column_ticker).Value <> ""
 
 Next    'run script on next worksheet
 End Sub
-
