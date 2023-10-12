@@ -31,7 +31,6 @@ year_change = 0
 year_open = 0
 year_close = 0
 year_volume_total = 0
-'sample_count = 0
 evluation_started = 0
 
 
