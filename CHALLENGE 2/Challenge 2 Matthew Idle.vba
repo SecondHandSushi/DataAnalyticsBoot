@@ -54,7 +54,7 @@ Cells(4, 15).Value = "Largest Volume"
 
 
 Do 'loop is active until an empty cell is detected
-    If valuation_started = False Then 'new ticker detected
+    If evaluation_started = False Then 'new ticker detected
         year_open = Cells(i, column_open).Value
         year_volume_total = year_volume_total + Cells(i, column_volume).Value
         evaluation_started = True
